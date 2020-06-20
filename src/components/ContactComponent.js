@@ -1,22 +1,44 @@
 import React, { Component } from 'react';
-import { Breadcrumb, BreadcrumbItem, Button, Label, Col, Row } from 'reactstrap';
+import { Breadcrumb, BreadcrumbItem, Button, Form, FormGroup, Label, Col, Row, Input } from 'reactstrap';
 import { Link } from 'react-router-dom';
-// import { Control, Form, Errors } from 'react-redux-form';
+// import { Control, Errors } from 'react-redux-form';
 
-const required = (val) => val && val.length;
-const maxLength = (len) => (val) => !(val) || (val.length <= len);
-const minLength = (len) => (val) => (val) && (val.length >= len);
-const isNumber = (val) => !isNaN(Number(val));
-const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
+// const required = (val) => val && val.length;
+// const maxLength = (len) => (val) => !(val) || (val.length <= len);
+// const minLength = (len) => (val) => (val) && (val.length >= len);
+// const isNumber = (val) => !isNaN(Number(val));
+// const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 
 class Contact extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            firstname: '',
+            lastname: '',
+            telnum: '',
+            email: '',
+            agree: false,
+            contactType: 'Tel.',
+            message: ''
+        }
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+    }
 
-    // constructor(props) {
-    //     super(props);
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+        this.setState({
+            [name]: value
+        })
+    }
 
-    //     this.handleSubmit = this.handleSubmit.bind(this);
-    // }
-
+    handleSubmit(event) {
+        console.log(JSON.stringify(this.state));
+        alert(JSON.stringify(this.state));
+        event.preventDefault()
+    }
     // handleSubmit(values) {
     //     console.log("Current State is: " + JSON.stringify(values));
     //     this.props.postFeedback(values);
@@ -60,6 +82,67 @@ class Contact extends Component {
                             <a role="button" className="btn btn-info"><i className="fa fa-skype"></i> Skype</a>
                             <a role="button" className="btn btn-success" href="mailto:confusion@food.net"><i className="fa fa-envelope-o"></i> Email</a>
                         </div>
+                    </div>
+                </div>
+                <div className="row row-content">
+                    <div className="col-12">
+                        <h3>Send Us Your Feedback</h3>
+                    </div>
+                    <div className="col-12 col-md-9">
+                        <Form onSubmit={this.handleSubmit}>
+                            <FormGroup row>
+                                <Label htmlfor="firstname" md={2}>First Name</Label>
+                                <Col md={10}>
+                                    <Input type="text" id="firstname" name="firstname" placeholder="First Name" value={this.state.firstname} onChange={this.handleInputChange}></Input>  
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label htmlfor="lastname" md={2}> Last Name</Label>
+                                <Col md={10}>
+                                    <Input typ="text" id="lastname" name="lastname" placeholder="Last Name" value={this.state.lastname} onChange={this.handleInputChange}></Input>
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label htmlfor="telnum" md={2}>Telephone Number</Label>
+                                <Col md={10}>
+                                    <Input type="text" id="telnum" name="telnum" placeholder="Telephone Number" value={this.state.telnum} onChange={this.handleInputChange}></Input>
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label htmlfor="email" md={2}>Email</Label>
+                                <Col md={10}>
+                                    <Input type="text" id="email" name="email" placeholder="Email" value={this.state.email} onChange={this.handleInputChange}></Input>
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Col md={{size: 6, offset:2}}>
+                                    <FormGroup check>
+                                        <Label check>
+                                            <Input type = "checkbox" name="agree" checed={this.state.agree}  onChange={this.handleInputChange}/> {' '}
+                                            <strong>May we contact you?</strong>
+                                        </Label>
+                                    </FormGroup>
+                                </Col>
+                                <Col md={{size: 3, offset:1}}>
+                                    <Input type="select" name="contactType" value={this.state.contactType}  onChange={this.handleInputChange}>
+                                        <option>Tel.</option>
+                                        <option>Email</option>
+                                    </Input>
+
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                            <Label htmlfor="message" md={2}>Your feedback</Label>
+                                <Col md={10}>
+                                    <Input type="textarea" id="message" name="message" rows="12" value={this.state.message} onChange={this.handleInputChange}></Input>
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Col md={{size:10, offset: 2}}>
+                                    <Button type="submit" color="primary"> Send Feedback </Button>
+                                </Col>
+                            </FormGroup>
+                        </Form>
                     </div>
                 </div>
                 {/* <div className="row row-content">
@@ -198,5 +281,6 @@ class Contact extends Component {
     }
 
 }
+
 
 export default Contact;
